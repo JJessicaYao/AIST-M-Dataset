@@ -1,6 +1,6 @@
 # AIST-M-Dataset
 
-This is the dataset proposed in **Dance with You: The Diversity Controllable Dancer Generation via Diffusion Models**.
+This is the dataset proposed in **Dance with You: The Diversity Controllable Dancer Generation via Diffusion Models**. You can download the whole dataset at [here](https://drive.google.com/uc?export=download&id=1--4lDL71kkbo-uPm5ZbqpISKTu7CgCH1).
 
 # Data Structure
 The data directory is organized as follows:
