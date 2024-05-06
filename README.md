@@ -16,6 +16,10 @@ To get a local copy up and running follow these simple example steps.
 3. Install python packages
    ```sh
    PyTorch == 1.6.0
+   tensorboard==2.8.0
+   pyyaml==6.0
+   tqdm==4.64.0
+   easydict
    ```
 
 ### AIST-M-Dataset
