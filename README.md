@@ -52,7 +52,9 @@ In our experiments, please unzip the zip file into './dataset/' folder before tr
 ## Training
 The training of DanY comprises of 3 steps in the following sequence. 
 ### Step 1: Training the 3D Pose Collection Stage
-The implementation of this step requires all of the dance motion data, both single and multiple dancers. You can choose to download the dataset of single dancer from [AIST++](https://google.github.io/aistplusplus_dataset/download.html) and mix its motion files with our AIST-M motion files to train from scratch. Alternatively, you can directly download pre-trained checkpoints for single dance from [Bailando's](https://github.com/lisiyao21/Bailando/tree/main) GitHub and fine-tune them using the motion files from our AIST-M dataset.
+The implementation of this step requires all of the dance motion data, both single and multiple dancers. You can choose to download the dataset of single dancer from [AIST++](https://google.github.io/aistplusplus_dataset/download.html) and mix its motion files with our AIST-M motion files to train from scratch. 
+Alternatively, you can directly download pre-trained checkpoints for single dance from [Bailando's](https://github.com/lisiyao21/Bailando/tree/main) GitHub and put the ckpt into './experiments/sep_vqvae/ckpt/' folder.
+Then, you can fine-tune them using the motion files from our AIST-M dataset.
 ```sh
 sh srun_vqvae.sh configs/sep_vqvae.yaml train [your node name] 1
 ```
