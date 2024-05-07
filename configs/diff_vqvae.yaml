@@ -1,0 +1,160 @@
+structure_vqvae:
+    name: SepVQVAE
+    up_half:
+        levels: 1
+        downs_t: [3,]
+        strides_t : [2,]
+        emb_width : 512
+        l_bins : 512
+        l_mu : 0.99
+        commit : 0.02
+        hvqvae_multipliers : [1,]
+        width: 512
+        depth: 3
+        m_conv : 1.0
+        dilation_growth_rate : 3
+        sample_length: 256
+        use_bottleneck: True
+        joint_channel: 3
+        # depth: 3
+        # width: 128
+        # m_conv: 1.0
+        # dilation_growth_rate: 1
+        # dilation_cycle: None
+        vel: 1
+        acc: 1
+        vqvae_reverse_decoder_dilation: True
+    down_half:
+        levels: 1
+        downs_t: [3,]   #strides_t**downs_t  Indicates how many frames are compressed into one code
+        strides_t : [2,] #
+        emb_width : 512   ##l_bins*emb_width Determines the number of codes
+        l_bins : 512
+        l_mu : 0.99
+        commit : 0.02
+        hvqvae_multipliers : [1,]
+        width: 512
+        depth: 3
+        m_conv : 1.0
+        dilation_growth_rate : 3
+        sample_length: 256
+        use_bottleneck: True 
+        joint_channel: 3
+        # depth: 3
+        # width: 128
+        # m_conv: 1.0
+        # dilation_growth_rate: 1
+        # dilation_cycle: None
+        vel: 1
+        acc: 1
+        vqvae_reverse_decoder_dilation: True
+    use_bottleneck: True
+    joint_channel: 3
+    l_bins : 512
+
+structure_unet_fill:
+    name: UNetModel
+    image_size: 64
+    in_channels: 512
+    model_channels: 512
+    out_channels: 512
+    num_res_blocks: 2
+    attention_resolutions: [2,4]  ## image_size // int(attention_resolutions) here use 32//16
+    dropout: 0.3
+    channel_mult: [1, 1, 2, 4, 8]
+    # channel_mult: [1, 1, 2, 4]
+    dims: 1
+    in_channels_music: 419
+    have_con: False #True ############
+    do_con_plus: False
+    music_dim: 256
+    conv_resample: True
+    num_classes: None
+    use_checkpoint: False
+    use_fp16: False
+    num_heads: 8
+    num_head_channels: -1
+    num_heads_upsample: -1
+    use_scale_shift_norm: True
+    resblock_updown: False
+    use_new_attention_order: False
+
+structure_unet_recode:
+    name: UNetModel
+    image_size: 64
+    in_channels: 512
+    model_channels: 512
+    out_channels: 512
+    num_res_blocks: 2
+    attention_resolutions: [2,4]  ## image_size // int(attention_resolutions) here use 32//16
+    dropout: 0.3
+    channel_mult: [1, 1, 2, 4, 8]
+    # channel_mult: [1, 1, 2, 4]
+    dims: 1
+    in_channels_music: 419
+    have_con: True #True ############
+    do_con_plus: False
+    music_dim: 256
+    conv_resample: True
+    num_classes: None
+    use_checkpoint: False
+    use_fp16: False
+    num_heads: 8
+    num_head_channels: -1
+    num_heads_upsample: -1
+    use_scale_shift_norm: True #True
+    resblock_updown: False
+    use_new_attention_order: False
+
+
+structure_diffusion_fill:
+    timesteps: 1000
+    beta_schedule_name: linear
+    model_mean_type: START_X
+    model_var_type: FIXED_SMALL
+    loss_type: CODEBOOKLOSS
+
+structure_diffusion_recode:
+    timesteps: 1000
+    beta_schedule_name: linear
+    model_mean_type: START_X
+    model_var_type: FIXED_SMALL
+    loss_type: NEWLOSS
+
+data:
+    name: aist_multi
+    train_dir: dataset/lead_partner
+    test_dir: dataset/lead_partner
+    music_dir: dataset/music_feature
+    interval: 256
+    rotmat: False
+    data_type: None
+    move: 32
+
+optimizer:
+    type: SGD
+    kwargs:
+        lr: 0.005
+        momentum: 0.9
+    # type: Adam
+    # kwargs:
+    #     lr: 0.0001
+    #     # betas: [0.9, 0.999]
+    #     weight_decay: 0.01
+    schedular_kwargs:
+        milestones: [100, 200, 300]
+        gamma: 0.1
+
+vqvae_weight: 'experiments/sep_vqvae/ckpt/epoch_500.pt'
+# fill_weight: 'experiments/fill_stage/ckpt/200.pth'  ## Change the directory of the checkpoints of the fill stage while the transfer stage is training
+# recode_weight: 'experiments/transfer_stage/ckpt/200.pth' ## the directory of the checkpoints of transfer stage
+
+batch_size: 64
+epoch: 500
+save_per_epochs: 100
+cuda: True
+ckptdir: 'experiments/fill_stage/ckpt/' # 'experiments/transfer_stage/ckpt/'
+log_per_updates: 1
+
+need_not_test_data: False
+need_not_train_data: True
