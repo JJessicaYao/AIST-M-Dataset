@@ -1,4 +1,4 @@
-from diff_vqvae_final_v2 import DiffVQVAE 
+from diff_vqvae import DiffVQVAE 
 import argparse
 import os
 import yaml
